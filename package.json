@@ -1,0 +1,58 @@
+{
+  "name": "meta-danmaku",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "sideEffects": [
+    "*.scss",
+    "*.css"
+  ],
+  "scripts": {
+    "dev": "vite demo",
+    "build": "vite build && BUILD_TYPE=es vite build && tsc && cp ./src/index.scss ./lib/index.scss",
+    "build:demo": "BUILD_TYPE=demo vite build",
+    "release": "node ./scripts/release.js",
+    "lint": "eslint src/**/*.ts --fix"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "keywords": [
+    "danmaku",
+    "danmu",
+    "player"
+  ],
+  "authors": "wopen <nepow@foxmail.com>",
+  "repository": "git@github.com:web-streaming/meta-danmaku.git",
+  "homepage": "https://github.com/web-streaming/meta-danmaku",
+  "author": "wopen <nepow@foxmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vitejs/plugin-legacy": "^2.0.0",
+    "autoprefixer": "^10.4.7",
+    "enquirer": "^2.3.6",
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "execa": "^6.1.0",
+    "sass": "^1.54.0",
+    "semver": "^7.3.7",
+    "terser": "^5.14.2",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.3"
+  },
+  "dependencies": {
+    "wblib": "^1.0.10"
+  }
+}
