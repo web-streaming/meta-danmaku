@@ -8,17 +8,87 @@
   <style>
     html {
       background: #000;
+      color: #fff;
     }
     .player {
+      position: relative;
       width: 700px;
       height: 500px;
       margin: 100px auto;
-      background: red;
+      background: #aaa;
+    }
+    #menu {
+      position: absolute;
+      background: #000;
+      z-index: 9;
     }
   </style>
 </head>
 <body>
   <div class="player"></div>
+  <div>
+    <label>开关 <input id="onoff" autocomplete="off" type="checkbox" /></label>
+  </div>
+  <div>
+    <label>
+      不透明度：<input id="opacity" autocomplete="off" type="range" />
+    </label>
+  </div>
+  <div>
+    <label>
+      弹幕速度：<input id="speed" autocomplete="off" type="range" />
+    </label>
+  </div>
+  <div>
+    <label>
+      播放速度：<input id="playback-rate" autocomplete="off" type="range" />
+    </label>
+  </div>
+  <div>
+    <label>
+      字体大小：<input id="fontsize" autocomplete="off" type="range" />
+    </label>
+  </div>
+  <div>
+    <label>
+      显示区域：<input id="area" autocomplete="off" type="range" />
+    </label>
+  </div>
+  <div>
+    <label>
+      展示时长：<input id="duration" autocomplete="off" type="range" />
+    </label>
+  </div>
+  <div>
+    不限：<input id="unlimited" autocomplete="off" type="checkbox" />
+  </div>
+  <div>
+    从下到上：<input id="bottom-up" autocomplete="off" type="checkbox" />
+  </div>
+  <div>
+    屏蔽：
+    <label>
+      滚动 <input id="scroll" autocomplete="off" type="checkbox" />
+    </label>
+    <label>
+      顶部 <input id="top" autocomplete="off" type="checkbox" />
+    </label>
+    <label>
+      底部 <input id="bottom" autocomplete="off" type="checkbox" />
+    </label>
+    <label>
+      彩色 <input id="color" autocomplete="off" type="checkbox" />
+    </label>
+  </div>
+  <div>
+    <button id="play">播放</button>
+    <button id="pause">暂停</button>
+    <button id="clear">清屏</button>
+  </div>
+
+  <div id="menu">
+    菜单
+  </div>
   <script type="module" src="./index.js" defer></script>
 </body>
 </html>
