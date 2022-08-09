@@ -2,8 +2,6 @@ import Danmaku from '../src'
 
 const player = document.querySelector('.player')
 
-const menu = document.querySelector('#menu');
-
 const danmaku = new Danmaku(player, {
   items: getItems(),
   render(b, d) {
@@ -14,20 +12,21 @@ const danmaku = new Danmaku(player, {
       img.style.maxHeight = '100%'
       b.content = img
     }
-  },
-  onBulletHoverIn(b) {
-    b.rect.update()
-    menu.style.top = b.rect.y + 'px';
-    menu.style.left = b.rect.x + 'px';
   }
 })
+
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(() => {
+    danmaku.updateSize()
+  });
+  ro.observe(danmaku.el);
+}
 
 let time = 0
 setInterval(() => {
   danmaku.update(time)
   time += 0.5
 }, 500)
-
 
 const onoff = document.querySelector('#onoff');
 const opacity = document.querySelector('#opacity');

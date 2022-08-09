@@ -33,6 +33,7 @@ export interface DanmakuConfig {
   items?: BulletConfig[];
   duration?: number;
   hoverable?: boolean;
+  menuEl?: HTMLElement;
   render?: (cfg: BulletConfig, danmaku: Danmaku) => void | false;
   onBulletHoverIn?: (bullet: Bullet, danmaku: Danmaku) => void;
   onBulletHoverOut?: (bullet: Bullet, danmaku: Danmaku) => void | boolean;

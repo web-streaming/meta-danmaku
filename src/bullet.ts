@@ -1,4 +1,6 @@
-import { $, isString, Rect } from 'wblib';
+import {
+  $, clamp, isString, Rect,
+} from 'wblib';
 import type { Danmaku } from './danmaku';
 import { BulletConfig, BulletSetting, DanmakuItemType } from './types';
 import { Timer } from './utils';
@@ -39,6 +41,10 @@ export class Bullet {
   private prevPauseTime = 0;
 
   private timer?: Timer;
+
+  private inTimer: any;
+
+  private outTimer: any;
 
   constructor(container: HTMLElement, private danmaku: Danmaku, cfg: BulletConfig, setting: BulletSetting) {
     this.el = container.appendChild($(`.${itemClass}`));
@@ -217,10 +223,56 @@ export class Bullet {
 
   private onMouseenter = () => {
     this.pause();
-    this.danmaku.config.onBulletHoverIn?.(this, this.danmaku);
+    const { onBulletHoverIn } = this.danmaku.config;
+    if (onBulletHoverIn) {
+      clearTimeout(this.inTimer);
+      this.inTimer = setTimeout(() => {
+        const { menu, rect, trackHeight } = this.danmaku;
+
+        if (menu.enabled) {
+          const mRect = menu.rect;
+          if (mRect.width) {
+            menu.tryClearTimer(this);
+            this.rect.update();
+
+            const l = clamp(
+              this.rect.x - rect.x + (this.rect.width - mRect.width - trackHeight) / 2,
+              0,
+              rect.width - mRect.width,
+            );
+
+            let t = this.rect.y - rect.y + this.rect.height;
+            let b = 0;
+            if (mRect.height + t > rect.height) {
+              b = rect.height - t + this.rect.height;
+              t = 0;
+            }
+
+            menu.setPosition(l, t, b);
+            menu.show(this);
+          }
+        }
+
+        onBulletHoverIn(this, this.danmaku);
+      }, 50);
+    }
   };
 
   private onMouseleave = () => {
+    clearTimeout(this.inTimer);
+    clearTimeout(this.outTimer);
+    this.outTimer = setTimeout(() => {
+      const menu = this.danmaku.menu;
+      if (!menu.enabled || menu.canRelease(this)) {
+        this.onHoverOut();
+      } else {
+        menu.register(this.onHoverOut);
+      }
+    }, 100);
+  };
+
+  private onHoverOut = () => {
+    this.danmaku.menu.hide(this);
     if (!this.danmaku.config.onBulletHoverOut?.(this, this.danmaku)) {
       this.play();
     }

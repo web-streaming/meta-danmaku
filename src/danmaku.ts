@@ -6,6 +6,7 @@ import {
 } from './types';
 import { getConfig } from './config';
 import { Bullet } from './bullet';
+import { Menu } from './menu';
 import { Timer } from './utils';
 
 export class Danmaku extends EventEmitterComponent {
@@ -14,6 +15,8 @@ export class Danmaku extends EventEmitterComponent {
   readonly config: RequiredDanmakuConfig;
 
   readonly timer: Timer;
+
+  readonly menu: Menu;
 
   enabled = true;
 
@@ -47,12 +50,10 @@ export class Danmaku extends EventEmitterComponent {
     super(container, '.metad');
     this.config = getConfig(config);
     this.rect = new Rect(this.el);
+    this.menu = new Menu(this.el, this.config.menuEl);
 
-    this.probeEl = this.el.appendChild($('.metad_item'));
+    this.probeEl = this.el.appendChild($('.metad_item.metad_probe'));
     this.probeEl.textContent = 'M';
-    const probeElStyle = this.probeEl.style;
-    probeElStyle.pointerEvents = 'none';
-    probeElStyle.opacity = '0';
 
     this.updateProperty();
 
@@ -145,7 +146,11 @@ export class Danmaku extends EventEmitterComponent {
   }
 
   updateConfig(cfg: DanmakuConfig) {
+    const menuEl = this.config.menuEl;
     Object.assign(this.config, cfg);
+    if (menuEl !== this.config.menuEl) {
+      this.menu.setChild(this.config.menuEl);
+    }
     this.updateProperty();
   }
 
